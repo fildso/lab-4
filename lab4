@@ -1,0 +1,64 @@
+class Record:
+    def __init__(self, name, phone_number):
+        self.name = name
+        self.phone_number = phone_number
+        self.phone_type = self.determine_phone_type(phone_number)
+
+    def determine_phone_type(self, phone_number):
+        if phone_number.startswith("+38044"):
+            return "Міський"
+        else:
+            return "Мобільний"
+
+class PhoneBook:
+    def __init__(self):
+        self.records = []
+
+    def add_record(self, name, phone_number):
+        record = Record(name, phone_number)
+        self.records.append(record)
+
+    def remove_record(self, name):
+        for record in self.records:
+            if record.name == name:
+                self.records.remove(record)
+                print(f"Запис для {name} було видалено.")
+                return
+        print(f"Запис для {name} не знайдено.")
+
+    def search_records(self, search_term):
+        found_records = [record for record in self.records if search_term.lower() in record.name.lower()]
+        if found_records:
+            print("Знайдені записи:")
+            for record in found_records:
+                print(f"Ім'я: {record.name}, Номер: {record.phone_number}, Тип: {record.phone_type}")
+        else:
+            print("Записи не знайдено.")
+
+if __name__ == "__main__":
+    phone_book = PhoneBook()
+
+    while True:
+        print("\nОберіть опцію:")
+        print("1. Додати запис")
+        print("2. Видалити запис")
+        print("3. Пошук запису за іменем")
+        print("4. Вийти")
+        choice = input("Ваш вибір: ")
+
+        if choice == "1":
+            name = input("Введіть ім'я абонента: ")
+            phone_number = input("Введіть номер абонента: ")
+            phone_book.add_record(name, phone_number)
+            print("Запис було додано до телефонної книги.")
+        elif choice == "2":
+            name = input("Введіть ім'я абонента для видалення: ")
+            phone_book.remove_record(name)
+        elif choice == "3":
+            search_term = input("Введіть частину імені для пошуку: ")
+            phone_book.search_records(search_term)
+        elif choice == "4":
+            print("Дякую за використання телефонної книги. До побачення!")
+            break
+        else:
+            print("Невірний вибір. Спробуйте ще раз.")
